@@ -1,8 +1,8 @@
 on:
+  workflow_dispatch:
   push:
     branches: 
-      - main
-  workflow_dispatch: 
+      - main 
 
 
 jobs:
@@ -10,13 +10,17 @@ jobs:
     name: build site
     runs-on: ubuntu-22.04
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: master
       - name: Build Site
         run: yarn && yarn eleventy
       - name: Upload static files as artifact
         id: deployment
         uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
         with:
-          path: build_outputs_folder/
+          path: _site/
 
   # Deploy job
   deploy:
